@@ -3,3 +3,4 @@
 *.wav
 *.mp4
 .DS_Store
+.vscode/settings.json
