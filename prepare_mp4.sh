@@ -1,9 +1,37 @@
 #!/bin/bash
 
-# Set input and output file paths
-input_folder="./mp3_files"
-image_path="./background.png"
-output_folder="./output"
+# Parse command line arguments
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+
+    case $key in
+        -i|--input)
+        input_folder="$2"
+        shift
+        shift
+        ;;
+        -m|--image)
+        image_path="$2"
+        shift
+        shift
+        ;;
+        -o|--output)
+        output_folder="$2"
+        shift
+        shift
+        ;;
+        *)
+        echo "Unknown option: $1"
+        exit 1
+        ;;
+    esac
+done
+
+# Set default input and output file paths if not provided as arguments
+input_folder=${input_folder:-"./mp3_files"}
+image_path=${image_path:-"./background.png"}
+output_folder=${output_folder:-"./output"}
 
 # Create output folder if it doesn't exist
 mkdir -p $output_folder
