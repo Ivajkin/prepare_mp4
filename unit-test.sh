@@ -13,13 +13,15 @@ rm -f "${output_folder}"/*.mp4
 ./prepare_mp4.sh --input "${input_folder}" --image "${image_path}" --output "${output_folder}"
 
 # Check that output files were created
-output_files=$(ls "${output_folder}")
-expected_files="Track 3 MP3 Reflection.mp4 Track 4 MP3 Relaxing Road.mp4 Track 9 MP3 Spirit Dance.mp4"
-if [ "${output_files}" != "${expected_files}" ]; then
+IFS=$'\n' read -d '' -r -a expected_files <<< "Track 3 MP3 Reflection.mp4
+Track 4 MP3 Relaxing Road.mp4
+Track 9 MP3 Spirit Dance.mp4"
+IFS=$'\n' read -d '' -r -a output_files <<< "$(ls "${output_folder}")"
+if [[ "${output_files[@]}" != "${expected_files[@]}" ]]; then
     echo "Test failed: incorrect output file names"
-    echo "Expected: ${expected_files}"
-    echo "Actual: ${output_files}"
-    diff -u <(echo "${expected_files}") <(echo "${output_files}")
+    echo "Expected: ${expected_files[@]}"
+    echo "Actual: ${output_files[@]}"
+    diff -u <(printf '%s\n' "${expected_files[@]}") <(printf '%s\n' "${output_files[@]}")
     exit 1
 fi
 
